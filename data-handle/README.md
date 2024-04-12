@@ -6,5 +6,4 @@
 
 ### This are files used for getting waterfall and temperature
 - rain data.py
-- tn-download.py
 - weather.ipynb
