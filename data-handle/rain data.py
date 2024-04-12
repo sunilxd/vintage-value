@@ -15,21 +15,26 @@ files = {
     'submit': (None, 'சமர்ப்பிக்கவும்'),
 }
 
-folder = Path('weather_org')
+folder = Path('../data/weather_org')
 
 current_date = start_date
 while current_date <= end_date:
     cur_date = current_date.strftime("%Y-%m-%d")
+    print(cur_date)
+    file_path = folder / cur_date
+
+    if file_path.is_file():
+        current_date += timedelta(days=1)
+        continue
 
     files['date'] = (None, cur_date)
     response = requests.post(
         'https://beta-tnsmart.rimes.int/index.php/Rainfall/daily_data',
         files=files,
     )
-    with open(folder / cur_date, 'wb') as f:
+    with open(file_path, 'wb') as f:
         pickle.dump(response.text, f)
 
-    print(cur_date)
     current_date += timedelta(days=1)
 
 
