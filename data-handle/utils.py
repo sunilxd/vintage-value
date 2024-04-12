@@ -74,6 +74,7 @@ def agmarknet(from_dt:str,
     response = response[response.find('<div>'):response.find('</div>')]
     soup = bs(response, 'html.parser')
     table = soup.find('table')
+    if table is None: return []
     rows = []
     for row in table.find_all('tr'):
         row_data = []
@@ -82,6 +83,7 @@ def agmarknet(from_dt:str,
         rows.append(row_data)
 
     return rows
+
 
     df = pd.DataFrame(rows[1:], columns=rows[0])
     return df
