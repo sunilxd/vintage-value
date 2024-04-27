@@ -31,12 +31,22 @@ def get_dataframe():
         dfs[crop] = {}
 
         average = df['price'].mean()
+        std_dev = df['price'].std()
         df['average'] = average
         dfs[crop]['df'] = df
-        dfs[crop]['score'] = (df['price'].iloc[-1]-average)
+        dfs[crop]['score'] = (df['price'].iloc[-1]-average)/std_dev
 
     bar.empty()
     return dfs
+
+st.latex(r'''
+    Trend Value = \frac{Last Price - Average}{Standard Deviation}
+''')
+
+st.latex(r'''
+    T(P) = \frac{P_n - \bar{P}}{\sigma(P)}
+''')
+
 
 dfs = get_dataframe()
 
@@ -47,9 +57,9 @@ crops = crops[:10]
 # trend = pd.DataFrame
 
 for crop in crops:
-    st.write('### {crop} {score}'.format(
+    st.write('#### **{crop}** {score}'.format(
         crop = crop,
-        score = round(dfs[crop]['score'], 4)
+        score = round(dfs[crop]['score'], 2)
     ))
 
     st.line_chart(dfs[crop]['df'], y=['price', 'average'])
